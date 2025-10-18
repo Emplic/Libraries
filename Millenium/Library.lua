@@ -527,7 +527,7 @@
 
     function library:create_mobile_buttons(window_frame)
             local ToggleButton = library:create("TextButton", {
-                Parent = library["items"], -- Parent to the main ScreenGui
+                Parent = library["mobile_buttons"], -- Parent to the new ScreenGui
                 Size = dim2(0, 100, 0, 35),
                 Position = dim2(0, 10, 0, 10 + gui_offset), -- Position top-left
                 Text = "Toggle UI",
@@ -547,7 +547,7 @@
             end)
             
             local LockButton = library:create("TextButton", {
-                Parent = library["items"],
+                Parent = library["mobile_buttons"], -- Parent to the new ScreenGui
                 Size = dim2(0, 100, 0, 35),
                 Position = dim2(0, 10, 0, 55 + gui_offset), -- Position below toggle
                 Text = "Lock UI",
@@ -600,6 +600,18 @@
                 ZIndexBehavior = Enum.ZIndexBehavior.Sibling;
                 IgnoreGuiInset = true;
             }); 
+
+            if library.is_mobile then
+                library[ "mobile_buttons" ] = library:create( "ScreenGui" , {
+                    Parent = coregui;
+                    Name = "\0_Mobile";
+                    Enabled = true;
+                    ZIndexBehavior = Enum.ZIndexBehavior.Global;
+                    IgnoreGuiInset = true;
+                });
+            end
+
+            
 
             local items = cfg.items; do
                 items[ "main" ] = library:create( "Frame" , {
