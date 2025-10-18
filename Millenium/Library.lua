@@ -304,15 +304,18 @@
             local start_pos = nil
             local start_frame_pos = nil
 
+
             local function StartDrag(input)
-                -- Check the .draggable property we set in library:window
-                if library.is_mobile and (not frame.draggable) then return end 
-                
-                dragging = true
-                drag_input = input
-                start_pos = input.Position
-                start_frame_pos = frame.Position
-            end
+                    -- [START] MODIFY THIS LINE
+                    -- Check the .draggable property we set in library:window
+                    if library.is_mobile and (not frame:GetAttribute("draggable")) then return end 
+                    -- [END] MODIFY THIS LINE
+                    
+                    dragging = true
+                    drag_input = input
+                    start_pos = input.Position
+                    start_frame_pos = frame.Position
+                end
 
             local function EndDrag(input)
                 if input == drag_input or (not library.is_mobile and input.UserInputType == Enum.UserInputType.MouseButton1) then
@@ -562,7 +565,7 @@
             local locked = false
             LockButton.MouseButton1Click:Connect(function()
                 locked = not locked
-                window_frame.draggable = not locked -- This property will be used by draggify
+                window_frame:SetAttribute("draggable", not locked)
                 LockButton.Text = locked and "Unlock UI" or "Lock UI"
             end)
         end
@@ -801,15 +804,19 @@
                 }); library:apply_theme(items[ "other_info" ], "accent", "TextColor3");        
             end 
 
-            do -- Other
-                items[ "main" ].draggable = true -- Add this property
+                do -- Other
+                -- [START] MODIFY THIS LINE
+                items[ "main" ]:SetAttribute("draggable", true) -- Add this property
+                -- [END] MODIFY THIS LINE
+
                 library:draggify(items[ "main" ])
                 library:resizify(items[ "main" ])
+                
                 if library.is_mobile then
                     library:create_mobile_buttons(items[ "main" ]) -- Pass the main frame
                 end
-            end 
-
+            end
+            
             function cfg.toggle_menu(bool) 
                 -- WIP 
                 -- if cfg.tween then 
