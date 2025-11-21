@@ -403,20 +403,22 @@
                 return 
             end
             
-            local config_path = library.directory .. "/configs"
-            if not isfolder(config_path) then
-                makefolder(config_path)
-            end
-
             local list = {}
+            local configs_path = library.directory .. "/configs"
             
-            for idx, file in listfiles(config_path) do
-                local name = file:gsub(library.directory .. "/configs\\", ""):gsub(".cfg", ""):gsub(library.directory .. "\\configs\\", "")
-                list[#list + 1] = name
+            if isfolder(configs_path) then
+                for idx, file in listfiles(configs_path) do
+                    local name = file:gsub(configs_path .. "\\", ""):gsub(".cfg", "")
+                    list[#list + 1] = name
+                end
+            end
+            
+            if #list == 0 then
+                list[1] = "No configs found"
             end
 
             config_holder.refresh_options(list)
-        end
+        end 
 
         function library:get_config()
             local Config = {}
